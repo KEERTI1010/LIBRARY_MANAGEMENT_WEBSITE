@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 const express = require("express");
 const app = express();
 
+const authRoutes = require('./routes/auth');
+
 app.use(cors());
 app.use(express.json());
 
@@ -22,6 +24,8 @@ mongoose.connect(process.env.MONGO_URL)
 app.get("/",(req,res) => {
     res.send("Library Server is Live!!");
 });
+
+app.use('/api/auth', authRoutes);
 
 app.post("/add-book", async (req, res) => {
     try {
