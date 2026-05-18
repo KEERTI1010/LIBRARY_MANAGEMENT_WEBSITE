@@ -54,7 +54,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8 text-gray-800">
+    <div className="min-h-screen bg-white p-8 text-gray-800">
       <h1 className="text-4xl font-extrabold text-center text-blue-700 mb-10">
         Library Management System
       </h1>

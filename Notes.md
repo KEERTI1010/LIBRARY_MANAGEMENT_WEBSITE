@@ -185,7 +185,16 @@ app.listen(5000, () => console.log("Server running on port 5000"));
 
 ## Frontend
 
-1. State Management (The Memory)
+1. The Imports (The Building Blocks)
+
+```jsx
+
+import axios from 'axios'; // The library used to send requests to your Backend (Port 5000)
+import { useState, useEffect } from 'react'; // React hooks for memory and timing
+
+```
+
+2. State Management (The Memory)
 
 ```jsx
 
@@ -195,17 +204,102 @@ const [searchTerm, setSearchTerm] = useState(''); // Stores what you type in the
 
 ```
 
+* These lines track everything happening in the UI. If a user types a letter, these update.
+
+  * books: An array that holds the list of books fetched from MongoDB.
+
+  * title, author, price: Track exactly what is currently inside the input boxes.
+
+  * editId: This is a "switch." If it's null, you are adding a book. If it has an ID, you are editing one.
+
+  * searchTerm: Tracks what you type in the search bar.
+
 * editId is the MVP here: If editId is null, the form is in "Add" mode. If it has a MongoDB ID, the form magically switches to "Edit" mode.
 
 ***
 
-2. Fetching Data (The "Auto-Loader")
+3. Fetching Data (The "Auto-Loader")
 
 ```jsx
 
+const fetchBooks = () => {
+  axios.get('http://localhost:5000/get-all-books')
+    .then((res) => setBooks(res.data)) // Takes the data from Backend and saves it in 'books' state
+    .catch((err) => console.log(err));
+};
 useEffect(() => { fetchBooks(); }, []);
 
 ```
 
 * Meaning: This is a "hook." It tells React: "As soon as the page finishes loading, run fetchBooks one time." This ensures your library isn't empty when you open the site.
 
+* useEffect: This calls fetchBooks() exactly once as soon as the page opens. Without this, your screen would stay empty until you manually clicked something.
+
+***
+
+4. CRUD Operations (The Logic)
+
+### Create (Add Book)
+
+```jsx
+
+axios.post('http://localhost:5000/add-book', { title, author, price })
+
+```
+
+* e.preventDefault(): This stops the browser from refreshing.
+
+* The Flow: It sends the three pieces of info to the server. Once the server says "Success!", it clears the input boxes (setTitle('')) so you can add another.
+
+### Update (Edit Book)
+
+* Updating is a two-step process in React:
+
+    1.handleEdit: When you click "Edit", it copies the book's data back into the input boxes and saves the _id into editId. It also scrolls you to the top.
+
+    2.handleUpdate: When you click "Save Changes," it sends a PUT request using that editId as the Param (just like we talked about in the backend!).
+
+### Delete (Remove Book)
+
+```jsx
+
+axios.delete(`http://localhost:5000/delete-book/${id}`)
+
+```
+
+* This takes the unique MongoDB ID and tells the server: "Remove the item with this specific fingerprint."
+
+
+***
+
+5. The "Smart" UI (The JSX)
+
+* The Conditional Form
+
+```jsx
+
+onSubmit={editId ? handleUpdate : handleAddBook}
+
+```
+
+* Ternary Operator: This is like an if/else statement.
+
+    * If editId is true (you clicked edit), the button runs the update logic.
+
+    * If editId is null, it runs the add logic.
+
+* The Instant Search (The Filter)
+
+```jsx
+
+{books
+  .filter((book) => book.author.toLowerCase().includes(searchTerm.toLowerCase()))
+  .map((book) => (...))}
+
+  ```
+
+* .filter(): This creates a temporary list containing only books where the author's name matches your search.
+
+* .toLowerCase(): This makes sure that "Rowling" and "rowling" both show up (case-insensitive).
+
+* .map(): This is a loop. For every book in your list, it "maps" it to a Tailwind-styled card on the screen.
