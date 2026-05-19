@@ -312,7 +312,7 @@ onSubmit={editId ? handleUpdate : handleAddBook}
 
 ## 2nd Feature ( Authentication )
 
-### Backend 
+## Backend 
 
 * To get started, we need to install two crucial security packages in your backend
 
@@ -325,7 +325,7 @@ npm install bcryptjs jsonwebtoken
 
 * jsonwebtoken: This creates the digital login tokens
 
-1.Creating the User Model
+### 1.Creating the User Model
 
 * unique: true: This tells MongoDB to double-check its data before saving. If someone tries to sign up with an email that already exists, MongoDB will instantly reject it and throw an error.
 
@@ -333,22 +333,79 @@ npm install bcryptjs jsonwebtoken
 
 * timestamps: true: This automatically logs exactly when a user created their account. It's incredibly useful for tracking new signups later on.
 
-2.The Authentication Routes (Signup & Login)
+***
+
+### 2.The Authentication Routes (Signup & Login)
+
+### Password Hashing (Bcrypt)
+In the real world, we never save raw text passwords like "admin123" in a database. If a hacker accesses the database, they would steal everyone's login credentials.
+
+Instead, we use bcryptjs to encrypt it.
+
+```jsx
+
+const salt = await bcrypt.genSalt(10);
+const hashedPassword = await bcrypt.hash(password, salt);
+
+```
+
+
+### How it works:
+* The Salt: Think of a **"salt"** as a random string of secret characters added to your password before it gets scrambled. genSalt(10) creates a ***highly secure**, random string.
+
+* The Hash: **Bcrypt** takes your password + salt and runs it through a complex mathematical formula to turn "admin123" into something**unreadable** like $2a$10$X9rK3m9....
+
+* One-Way Street: **Hashing** is a one-way operation. You can scramble a password into a hash, but you can never "un-scramble" a hash back into a plain password.
+
+* How do we check it during Login? Since we can't decrypt the stored hash, when a user logs in, bcrypt.compare(password, user.password) takes the incoming typed password, applies the exact same salt, hashes it, and checks if the two resulting hashes match!
 
 * bcrypt.genSalt(10) & .hash(): This turns a plain password like "123456" into a scrambled string like $2a$10$X9r.... The number 10 is the "rounds"—the higher it is, the more secure it is, but the longer it takes to process. 10 is the industry sweet spot.
 
 * bcrypt.compare(): Since we never store plain text passwords, we can't do if (password === user.password). Bcrypt decrypts and compares the hashes safely behind the scenes.
 
-* jwt.sign(): This creates the digital passport. It embeds the user's database id and role inside the token.
+***
+
+### 3. JWT (JSON Web Tokens)
+* Once a user successfully logs in, how does the server remember them? HTTP is "stateless"—meaning every time you click a button, the server forgets who you are.
+
+* To solve this, the server hands the frontend a JWT Token (a digital keycard).
+
+  * jwt.sign(): This creates the digital passport. It embeds the user's database id and role inside the token.
+
+  
+```jsx
+
+  const token = jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '1d' }
+);
+
+```
 
 
-### Frontend
+
+* What is inside a JWT?
+=> A JWT is a long string divided into three parts separated by dots (.):
+
+* Header: Tells what algorithm is used to lock the token.
+
+* Payload: The data we want to store inside the token. In your code, we safely embedded the user's MongoDB _id and their library role.
+
+* Signature: A secure verification fingerprint generated using your JWT_SECRET. It proves the token hasn't been faked or altered by a hacker.
+
+***
+
+## Frontend
 
 * localStorage.setItem('token', ...): This is how we achieve a "persistent session". It saves the keycard securely inside the user's web browser data. Even if they close the browser tab and come back tomorrow, they stay logged in!
 
 * The Dynamic Payload:
+
 ```jsx
+
 const endpoint = isLogin ? 'login' : 'register';
+
 ```
 
 * Instead of writing two different click handlers, we use a single smart function that checks our isLogin state to decide whether it should knock on the backend's /login door or /register door.
