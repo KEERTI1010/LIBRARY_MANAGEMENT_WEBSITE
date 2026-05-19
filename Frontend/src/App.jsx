@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import Auth from './components/Auth'; // Import our new gatekeeper component
+import Auth from './components/Auth'; 
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -11,7 +11,6 @@ function App() {
   const [editId, setEditId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Check if a user is already logged in when the page loads
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
@@ -62,7 +61,6 @@ function App() {
     }
   };
 
-  // Logout Handler
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -71,16 +69,13 @@ function App() {
     setTitle(''); setAuthor(''); setPrice('');
   };
 
-  // --- GATEKEEPER CONDITION ---
-  // If no user is logged in, show the Auth screen and stop right here!
   if (!currentUser) {
     return <Auth onLoginSuccess={(user) => setCurrentUser(user)} />;
   }
 
   return (
     <div className="min-h-screen bg-slate-50 p-8 text-gray-800">
-      
-      {/* Navbar with Logout & User Role Badge */}
+
       <div className="max-w-6xl mx-auto flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8">
         <div className="flex items-center gap-3">
           <span className="font-medium text-gray-600">Logged in as: <strong className="text-gray-900">{currentUser.email}</strong></span>
@@ -92,9 +87,8 @@ function App() {
         </div>
         <button 
           onClick={handleLogout}
-          className="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-4 py-2 rounded-lg text-sm transition-all active:scale-95"
-        >
-          Logout 👋
+          className="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-4 py-2 rounded-lg text-sm transition-all active:scale-95">
+          Logout 
         </button>
       </div>
 
@@ -102,12 +96,10 @@ function App() {
         Library Management System
       </h1>
 
-      {/* CONDITIONAL FORM: Only show the Form if the logged-in user is an ADMIN */}
       {currentUser.role === 'admin' ? (
         <form 
           onSubmit={editId ? handleUpdate : handleAddBook} 
-          className="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100 mb-12"
-        >
+          className="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100 mb-12">
           <h3 className="text-xl font-bold mb-6 text-center text-gray-700">
             {editId ? "Edit Book Details" : "Add New Book"}
           </h3>
@@ -150,8 +142,6 @@ function App() {
         </div>
       )}
       
-
-      {/* Search Bar (Everyone can see this) */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="relative">
           <input
@@ -165,7 +155,6 @@ function App() {
         </div>
       </div>
 
-      {/* Books Display Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {books
           .filter((book) => 
@@ -178,7 +167,6 @@ function App() {
             <div className="flex justify-between items-center border-t pt-4">
               <span className="text-2xl font-black text-green-600">${book.price}</span>
               
-              {/* CONDITIONAL CONTROLS: Only render Edit/Remove buttons if user is an ADMIN */}
               {currentUser.role === 'admin' && (
                 <div className="flex gap-3">
                   <button onClick={() => handleEdit(book)} className="text-blue-500 hover:underline text-sm font-bold">Edit</button>

@@ -352,3 +352,10 @@ const endpoint = isLogin ? 'login' : 'register';
 ```
 
 * Instead of writing two different click handlers, we use a single smart function that checks our isLogin state to decide whether it should knock on the backend's /login door or /register door.
+
+* Line-by-Line Super Concepts to Learn Here
+if (!currentUser): This early return acts as our security block. If the value is empty, React completely stops executing the rest of App.jsx and renders <Auth />. The user can never access or peek at your cards layout without passing through the portal first!
+
+* currentUser.role === 'admin' ? (...) : (...): This is role-based frontend security. We use it to hide the input form entirely from students.
+
+* currentUser.role === 'admin' && (...): This uses the Short-Circuit Logical Operator. If the statement on the left is true, it renders what's on the right. If it's a student, the "Edit" and "Remove" buttons won't even exist in the HTML structure.
