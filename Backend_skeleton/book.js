@@ -17,17 +17,17 @@ app.post ("/add_book" ,async ( req , res) => {
 
     books.push({
         title,author,price
-    })
+    });
     return res.status(200).json ({msg:"Books Added sucessfully",books})
 });
 
 app.get ("/search_book" , (req , res) => {
     const {title} = req.query;
-    const book  = books.find ( (book) =>  book.title.toLowerCase() === title.toLowerCase())
+    const book  = books.find ( (book) =>  book.title.toLowerCase() === title.toLowerCase());
     if (!book) {
         return res.status(400).json ({msg:"Searched Book Not found"});
     }
-    return res.status(200).json ({msg:"Books Found",book})
+    return res.status(200).json ({msg:"Books Found",book});
 });
 
 app.delete ("/delete_book" , (req , res) => {
@@ -36,7 +36,7 @@ app.delete ("/delete_book" , (req , res) => {
 
 app.put ("/update_book" , (req , res) => {
     const {title , author , price } = req.body;
-    const book = books.find ((book) => book.title.toLowerCase() === title.toLowerCase())
+    const book = books.find ((book) => book.title.toLowerCase() === title.toLowerCase());
     if (!book){
         return res.status(400).json ({msg:"Book Not Found"});
     }

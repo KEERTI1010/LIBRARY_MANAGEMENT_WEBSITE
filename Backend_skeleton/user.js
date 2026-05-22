@@ -30,6 +30,6 @@ app.post("/login" ,(req , res) => {
         return res.status(400).json ({msg:"Invalid Passward"});
     }
     return res.status(200).json ({msg:"Logged in Successfully"});
-})
+});
 
 app.listen(3000,() => console.log("its Runniig  on port 3000"));
