@@ -11,14 +11,25 @@ app.get("/" , async (req,res) => {
 
 app.post("/signup" , (req , res) => {
     const { email , password } =req.body;
-    user.push ({
+    users.push ({
         email , password
     });
 
     return res.status(200).json({msg:"Signup in Sucessfully"})
 });
 
-app.post("/login" ,(req , res))
+app.post("/login" ,(req , res) => {
+    const {email , password} = req.body;
+    const user = users.find ((user) => user.email === email);
 
+    if (!user) {
+        return res.status(400).json({msg:"Email Not Found"});
+    }
+
+    if (user.password !== password) {
+        return res.status(400).json ({msg:"Invalid Passward"});
+    }
+    return res.status(200).json ({msg:"Logged in Successfully"});
+})
 
 app.listen(3000,() => console.log("its Runniig  on port 3000"));
