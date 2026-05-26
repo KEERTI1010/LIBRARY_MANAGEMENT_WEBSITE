@@ -107,21 +107,17 @@ function App() {
           <div className="flex flex-col gap-4">
             <input 
               required className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
-              placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} 
-            />
+              placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
             <input 
               required className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
-              placeholder="Author" value={author} onChange={(e) => setAuthor(e.target.value)} 
-            />
+              placeholder="Author" value={author} onChange={(e) => setAuthor(e.target.value)}/>
             <input 
               required className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
-              placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} 
-            />
+              placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)}/>
             
             <button 
               type="submit" 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition-all active:scale-95"
-            >
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition-all active:scale-95">
               {editId ? "Save Changes" : "Add to Collection"}
             </button>
 
@@ -129,8 +125,7 @@ function App() {
               <button 
                 type="button"
                 onClick={() => { setEditId(null); setTitle(''); setAuthor(''); setPrice(''); }}
-                className="text-gray-400 hover:text-gray-600 text-sm font-medium mt-1"
-              >
+                className="text-gray-400 hover:text-gray-600 text-sm font-medium mt-1">
                 Cancel Edit
               </button>
             )}
@@ -149,8 +144,7 @@ function App() {
             placeholder="Search by Author name..."
             className="w-full p-4 pl-12 bg-white border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+            onChange={(e) => setSearchTerm(e.target.value)}/>
           <span className="absolute left-4 top-4 text-gray-400">🔍</span>
         </div>
       </div>

@@ -56,16 +56,14 @@ function Auth({ onLoginSuccess }) {
             <label className="text-xs font-bold text-gray-600 uppercase tracking-wider block mb-1">Email Address</label>
             <input 
               type="email" required className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-              placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)}
-            />
+              placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </div>
 
           <div>
             <label className="text-xs font-bold text-gray-600 uppercase tracking-wider block mb-1">Password</label>
             <input 
               type="password" required className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-              placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)}
-            />
+              placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)}/>
           </div>
 
           {/* Show the Role selector ONLY during Signup */}
@@ -74,8 +72,7 @@ function Auth({ onLoginSuccess }) {
               <label className="text-xs font-bold text-gray-600 uppercase tracking-wider block mb-1">Join As</label>
               <select 
                 className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all font-medium text-gray-700"
-                value={role} onChange={(e) => setRole(e.target.value)}
-              >
+                value={role} onChange={(e) => setRole(e.target.value)}>
                 <option value="student">Student (View Only)</option>
                 <option value="admin">Admin (Full Access)</option>
               </select>
@@ -90,8 +87,7 @@ function Auth({ onLoginSuccess }) {
         <div className="text-center mt-6 border-t pt-4">
           <button 
             type="button" onClick={() => { setIsLogin(!isLogin); setError(''); }}
-            className="text-sm font-bold text-blue-600 hover:text-blue-800 transition-all"
-          >
+            className="text-sm font-bold text-blue-600 hover:text-blue-800 transition-all">
             {isLogin ? "Don't have an account? Register" : "Already have an account? Sign In"}
           </button>
         </div>
