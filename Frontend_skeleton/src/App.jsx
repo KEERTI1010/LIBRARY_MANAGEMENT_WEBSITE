@@ -12,9 +12,6 @@ function App() {
         <div className="bg-blue-600 rounded-xl text-center mt-4 py-3 px-4"><h1>Sign In</h1></div>
         <h1 className="text-center mt-4 ">Dont have Account ? Do Register</h1>
       </div>
-
-
-
     </div>
   )
 }
