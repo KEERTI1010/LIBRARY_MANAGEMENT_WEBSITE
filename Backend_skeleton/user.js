@@ -1,26 +1,41 @@
+require("dotenv").config();
+
 const express = require ("express");
 const app = express ();
+const mongoose = require("mongoose");
+const User = require("./user_schema");
+const URL = process.env.MONGO_URL;
 
 app.use(express.json());
 
-const users = [];
+mongoose.connect (URL)
+.then(() =>{
+    console.log("Database Connected");
+})
+.catch((err) => {
+    console.log("Error:",err);
+});
 
 app.get("/" , async (req,res) => {
     res.status(200).json ({msg:"Login"})
 });
 
-app.post("/signup" , (req , res) => {
-    const { email , password } =req.body;
-    users.push ({
-        email , password
-    });
+app.post("/signup" ,async (req , res) => {
+    const { email , password}= req.body;
+    const Exist_User = await User.findOne({ email });
+
+    if (Exist_User) {
+        return res.status(400).json({msg: "User already exists"});
+    }
+    const user = new User({email,password});
+    await user.save();
 
     return res.status(200).json({msg:"Signup in Sucessfully"})
 });
 
-app.post("/login" ,(req , res) => {
+app.post("/login" , async(req , res) => {
     const {email , password} = req.body;
-    const user = users.find ((user) => user.email === email);
+    const user = await User.findOne ({email});
 
     if (!user) {
         return res.status(400).json({msg:"Email Not Found"});
