@@ -5,8 +5,10 @@ const app = express ();
 const mongoose = require("mongoose");
 const User = require("./user_schema");
 const URL = process.env.MONGO_URL;
+const cors = require("cors");
 
 app.use(express.json());
+app.use(cors());
 
 mongoose.connect (URL)
 .then(() =>{
