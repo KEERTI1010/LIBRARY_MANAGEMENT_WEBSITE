@@ -23,7 +23,7 @@ app.get("/" , async (req,res) => {
 });
 
 app.post("/signup" ,async (req , res) => {
-    const { email , password}= req.body;
+    const {email , password}= req.body;
     const Exist_User = await User.findOne({ email });
 
     if (Exist_User) {
